@@ -11,15 +11,15 @@ public class LyBar extends LyNode {
 	private final Bar bar;
 	private final boolean sysBreak;
 
-	LyBar(final Bar bar,final boolean sysBreak) {;
+	LyBar(final Bar bar, final boolean sysBreak) {
 		this.bar = bar;
-		this.sysBreak=sysBreak;
+		this.sysBreak = sysBreak;
 	}
 
 	public Bar getBar() {
 		return bar;
 	}
-	
+
 	public boolean isSysBreak() {
 		return sysBreak;
 	}

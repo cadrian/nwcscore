@@ -48,7 +48,7 @@ class LyStaff {
 		layer.add(node);
 	}
 
-	public void output(final PrintWriter out, final boolean withNames, String... instructions) {
+	public void output(final PrintWriter out, final boolean withNames, final String... instructions) {
 		out.print("  \\new Staff ");
 		if (withNames) {
 			out.println("\\with {");
@@ -78,13 +78,11 @@ class LyStaff {
 			final int n = nodes.size();
 			final int n2 = n / 2;
 			for (int i = 0; i < n; i++) {
-				if (i > 0) {
-					// out.println(" \\\\");
-				}
+				out.print("    \\new Voice { ");
 				if (i < n2) {
-					out.println("    \\new Voice { \\voiceOne \\autoChange");
+					out.println("\\voiceOne");
 				} else {
-					out.println("    \\new Voice { \\voiceTwo \\autoChange");
+					out.println("\\voiceTwo");
 				}
 				outputLayer(out, "      ", nodes.get(i));
 				out.println("    }");
@@ -94,8 +92,8 @@ class LyStaff {
 		}
 	}
 
-	private void outputInstructions(PrintWriter out, String... instructions) {
-		for (String instruction : instructions) {
+	private void outputInstructions(final PrintWriter out, final String... instructions) {
+		for (final String instruction : instructions) {
 			out.println("    " + instruction);
 		}
 	}

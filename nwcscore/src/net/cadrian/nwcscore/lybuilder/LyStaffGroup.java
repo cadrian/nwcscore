@@ -58,7 +58,6 @@ class LyStaffGroup {
 	}
 
 	void output(final PrintWriter out) {
-		final int n = staves.size();
 		if (staves.size() > 1 && getName() != null && hasBracket("Brace")) {
 			out.println("  \\new PianoStaff \\with {");
 			out.println("    instrumentName = #\"" + getName() + "\"");
@@ -66,20 +65,13 @@ class LyStaffGroup {
 			out.println("    \\remove \"System_start_delimiter_engraver\"");
 			out.println("    \\override InstrumentName.self-alignment-X = #RIGHT");
 			out.println("  } { <<");
-			final int n2 = n / 2;
-			for (int i = 0; i < n; i++) {
-				if (i > 0) {
-					//out.println("    \\\\");
-				}
-				staves.get(i).output(out, false);//, i < n2 ? "\\upper" : "\\lower");
+			for (final LyStaff staff : staves) {
+				staff.output(out, false);
 			}
 			out.println("  >> }");
 		} else {
-			for (int i = 0; i < n; i++) {
-				if (i > 0) {
-					//out.println("  \\\\");
-				}
-				staves.get(i).output(out, true);
+			for (final LyStaff staff : staves) {
+				staff.output(out, true);
 			}
 		}
 	}

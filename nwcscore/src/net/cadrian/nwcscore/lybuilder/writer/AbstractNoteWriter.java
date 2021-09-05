@@ -10,19 +10,19 @@ abstract class AbstractNoteWriter implements NotesWriter {
 	protected final NotesWriterContext context;
 	private final NotesWriter previous;
 
-	AbstractNoteWriter(NotesWriterContext context) {
+	AbstractNoteWriter(final NotesWriterContext context) {
 		this.context = context;
 		this.previous = context.notesWriter;
 	}
 
 	protected final List<List<FullNote>> chords = new ArrayList<>();
 
+	@Override
 	public abstract void addChord(final List<FullNote> chord);
 
-	protected final void addChord(final List<FullNote> chord, boolean full) {
+	protected final void addChord(final List<FullNote> chord, final boolean full) {
 		chords.add(chord);
 		if (full) {
-			System.out.println(getClass().getSimpleName() + ": full");
 			output();
 			context.notesWriter = previous;
 		}

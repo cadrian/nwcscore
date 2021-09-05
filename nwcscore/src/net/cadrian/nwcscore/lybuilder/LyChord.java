@@ -15,7 +15,7 @@ public class LyChord extends LyNode {
 	private final List<FullNote> longNotes;
 	private final Map<String, String> opts;
 
-	LyChord(final List<FullNote> shortNotes, List<FullNote> longNotes, final Map<String, String> opts) {
+	LyChord(final List<FullNote> shortNotes, final List<FullNote> longNotes, final Map<String, String> opts) {
 		this.shortNotes = shortNotes;
 		this.longNotes = longNotes;
 		this.opts = opts;

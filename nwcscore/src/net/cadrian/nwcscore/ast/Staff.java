@@ -53,7 +53,7 @@ public class Staff extends AbstractNode {
 		final Set<String> property = getWithNextStaff();
 		return property != null && property.contains("Layer");
 	}
-	
+
 	public boolean isConnectBars() {
 		final Set<String> property = getWithNextStaff();
 		return property != null && property.contains("ConnectBars");

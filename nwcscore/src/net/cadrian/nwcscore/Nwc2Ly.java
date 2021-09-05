@@ -14,12 +14,12 @@ import net.cadrian.nwcscore.parser.ParseException;
 import net.cadrian.nwcscore.parser.Parser;
 
 public class Nwc2Ly {
-	
+
 	private static final Pattern FILENAME_PATTERN = Pattern.compile("^(?<name>.*?)\\.nwctxt$");
 
 	public static void main(final String[] args) throws Exception {
-		String inputFilename = args[0];
-		Matcher inputFilenameMatcher = FILENAME_PATTERN.matcher(inputFilename);
+		final String inputFilename = args[0];
+		final Matcher inputFilenameMatcher = FILENAME_PATTERN.matcher(inputFilename);
 		if (!inputFilenameMatcher.matches()) {
 			throw new Exception("invalid file name");
 		}

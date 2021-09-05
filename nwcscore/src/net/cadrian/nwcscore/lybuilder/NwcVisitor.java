@@ -60,12 +60,8 @@ class NwcVisitor implements Visitors {
 			out.println("\\score { \\new StaffGroup {");
 			out.println("  \\set StaffGroup.systemStartDelimiterHierarchy = #'" + getSystemStartDelimiterHierarchy());
 			out.println("  <<");
-			final int n = staffGroups.size();
-			for (int i = 0; i < n; i++) {
-				if (i > 0) {
-					// out.println(" \\\\");
-				}
-				staffGroups.get(i).output(out);
+			for (final LyStaffGroup staffGroup : staffGroups) {
+				staffGroup.output(out);
 			}
 			out.println(">> } }");
 		}
