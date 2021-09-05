@@ -16,6 +16,8 @@
  */
 package net.cadrian.nwcscore.lybuilder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +34,15 @@ public class LyChord extends LyNode {
 	private final Map<String, String> opts;
 
 	LyChord(final List<FullNote> shortNotes, final List<FullNote> longNotes, final Map<String, String> opts) {
-		this.shortNotes = shortNotes;
-		this.longNotes = longNotes;
+		if (longNotes != null && longNotes.get(0).duration == shortNotes.get(0).duration) {
+			List<FullNote> notes = new ArrayList<>(shortNotes);
+			notes.addAll(longNotes);
+			this.shortNotes = Collections.unmodifiableList(notes);
+			this.longNotes = null;
+		} else {
+			this.shortNotes = shortNotes;
+			this.longNotes = longNotes;
+		}
 		this.opts = opts;
 	}
 

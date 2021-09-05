@@ -60,8 +60,9 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 	@Override
 	public void visit(final LyKey node) {
 		keySignature = node.getSignature();
-		out.println(indent + "\\key " + keySignature.getRoot().toString().toLowerCase() + " \\"
-				+ keySignature.getMode().toString().toLowerCase());
+		out.println(
+				indent + "\\key " + keySignature.getRoot().toString().toLowerCase().replace('♯', 's').replace('♭', 'f')
+						+ " \\" + keySignature.getMode().toString().toLowerCase());
 	}
 
 	@Override
@@ -197,6 +198,8 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 		final FullNote nodeFullNote = node.getFullNote();
 		if (noteWriterContext.isStarted()) {
 			noteWriterContext.addChord(Collections.singletonList(nodeFullNote));
+		} else if (nodeFullNote.triplet != null) {
+			noteWriterContext.startTriplet(Collections.singletonList(nodeFullNote));
 		} else {
 			noteWriterContext.singleChord(Collections.singletonList(nodeFullNote));
 		}

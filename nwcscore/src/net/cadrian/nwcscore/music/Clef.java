@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 public enum Clef {
-	// TODO check values for Alto and Tenor keys
-	TREBLE(Note.B, 1), TREBLE8(Note.B, 0), BASS(Note.D, 0), ALTO(Note.A, 1), TENOR(Note.C, 0);
+	// TODO check values for Tenor key
+	TREBLE(Note.B, 1), TREBLE8(Note.B, 0), BASS(Note.D, 0), ALTO(Note.C, 1), TENOR(Note.A, 0);
 
 	// notes at line 0 (NWC-style: 0 is the 3rd line...)
 	public final Note note0;

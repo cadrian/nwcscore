@@ -141,6 +141,8 @@ public class NotesWriterContext {
 			return "''";
 		case 3:
 			return "'''";
+		case 4:
+			return "''''";
 		default:
 			throw new RuntimeException("invalid octave: " + octave);
 		}

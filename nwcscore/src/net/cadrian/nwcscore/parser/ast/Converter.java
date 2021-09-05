@@ -100,7 +100,7 @@ public interface Converter<T> {
 			}
 			final Map<String, String> result = new HashMap<>();
 			for (final String s : value.split(",")) {
-				final int i = s.indexOf(',');
+				final int i = s.indexOf('=');
 				if (i < 0) {
 					result.put(s, "");
 				} else {

@@ -217,6 +217,13 @@ class NwcVisitor implements Visitors {
 				throw new RuntimeException("clef not implemented: bass " + shift);
 			}
 			break;
+		case "Alto":
+			if (shift == null) {
+				currentClef = net.cadrian.nwcscore.music.Clef.ALTO;
+			} else {
+				throw new RuntimeException("clef not implemented: alto " + shift);
+			}
+			break;
 		default:
 			throw new RuntimeException("clef not implemented: " + type);
 		}
