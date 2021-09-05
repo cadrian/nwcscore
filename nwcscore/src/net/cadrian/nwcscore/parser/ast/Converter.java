@@ -1,4 +1,4 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,12 +11,18 @@ public interface Converter<T> {
 	public static final Converter<Integer> INTEGER = new Converter<>() {
 		@Override
 		public Integer convert(final String value) {
+			if (value == null) {
+				return 0;
+			}
 			return Integer.decode(value);
 		}
 	};
 
 	public static final Converter<String> NWC_STRING = new Converter<>() {
 		public String convert(final String value) {
+			if (value == null) {
+				return null;
+			}
 			final StringBuilder result = new StringBuilder();
 			int s = 0;
 			for (final char c : value.toCharArray()) {
@@ -60,6 +66,9 @@ public interface Converter<T> {
 	public static final Converter<Set<String>> NWC_STRINGSET = new Converter<>() {
 		@Override
 		public Set<String> convert(final String value) {
+			if (value == null) {
+				return null;
+			}
 			final Set<String> result = new HashSet<>();
 			final String[] split = value.split(",");
 			result.addAll(Arrays.asList(split));
@@ -70,6 +79,9 @@ public interface Converter<T> {
 	public static final Converter<Map<String, String>> NWC_STRINGMAP = new Converter<>() {
 		@Override
 		public Map<String, String> convert(final String value) {
+			if (value == null) {
+				return null;
+			}
 			final Map<String, String> result = new HashMap<>();
 			for (final String s : value.split(",")) {
 				final int i = s.indexOf(',');

@@ -1,12 +1,12 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
-public class StaffInstrument extends AbstractNode {
+public class TimeSig extends AbstractNode {
 
 	public static interface Visitor extends AbstractNode.Visitor {
-		void visit(StaffInstrument node);
+		void visit(TimeSig node);
 	}
 
-	public StaffInstrument() {
+	public TimeSig() {
 	}
 
 	@Override

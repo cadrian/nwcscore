@@ -1,12 +1,12 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
-public class Rest extends AbstractNode {
+public class SustainPedal extends AbstractNode {
 
 	public static interface Visitor extends AbstractNode.Visitor {
-		void visit(Rest node);
+		void visit(SustainPedal node);
 	}
 
-	public Rest() {
+	public SustainPedal() {
 	}
 
 	@Override

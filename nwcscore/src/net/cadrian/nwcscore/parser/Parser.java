@@ -1,19 +1,21 @@
 package net.cadrian.nwcscore.parser;
 
-import net.cadrian.nwcscore.ast.AbstractNode;
-import net.cadrian.nwcscore.ast.Bar;
-import net.cadrian.nwcscore.ast.Chord;
-import net.cadrian.nwcscore.ast.Clef;
-import net.cadrian.nwcscore.ast.Key;
-import net.cadrian.nwcscore.ast.Lyric;
-import net.cadrian.nwcscore.ast.Note;
-import net.cadrian.nwcscore.ast.Rest;
-import net.cadrian.nwcscore.ast.RestMultiBar;
-import net.cadrian.nwcscore.ast.Song;
-import net.cadrian.nwcscore.ast.SongInfo;
-import net.cadrian.nwcscore.ast.Staff;
-import net.cadrian.nwcscore.ast.StaffInstrument;
-import net.cadrian.nwcscore.ast.TimeSig;
+import net.cadrian.nwcscore.parser.ast.AbstractNode;
+import net.cadrian.nwcscore.parser.ast.Bar;
+import net.cadrian.nwcscore.parser.ast.Chord;
+import net.cadrian.nwcscore.parser.ast.Clef;
+import net.cadrian.nwcscore.parser.ast.Key;
+import net.cadrian.nwcscore.parser.ast.Lyric;
+import net.cadrian.nwcscore.parser.ast.Note;
+import net.cadrian.nwcscore.parser.ast.Rest;
+import net.cadrian.nwcscore.parser.ast.RestMultiBar;
+import net.cadrian.nwcscore.parser.ast.Song;
+import net.cadrian.nwcscore.parser.ast.SongInfo;
+import net.cadrian.nwcscore.parser.ast.Staff;
+import net.cadrian.nwcscore.parser.ast.StaffInstrument;
+import net.cadrian.nwcscore.parser.ast.SustainPedal;
+import net.cadrian.nwcscore.parser.ast.TimeSig;
+import net.cadrian.nwcscore.parser.ast.User;
 
 public class Parser {
 
@@ -107,6 +109,12 @@ public class Parser {
 			break;
 		case "Rest":
 			parseRest();
+			break;
+		case "User":
+			parseUser();
+			break;
+		case "SustainPedal":
+			parseSustainPedal();
 			break;
 		default:
 			buffer.skipLine();
@@ -203,6 +211,23 @@ public class Parser {
 		final Rest rest = new Rest();
 		parseProperties(rest);
 		staff.addNode(rest);
+	}
+
+	private void parseUser() throws ParseException {
+		if (!buffer.check('|')) {
+			throw new ParseException("Invalid user object");
+		}
+		buffer.next();
+		final String name = buffer.readUntil('|');
+		final User user = new User(name);
+		parseProperties(user);
+		staff.addNode(user);
+	}
+
+	private void parseSustainPedal() throws ParseException {
+		final SustainPedal sustainPedal = new SustainPedal();
+		parseProperties(sustainPedal);
+		staff.addNode(sustainPedal);
 	}
 
 }

@@ -1,4 +1,4 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public abstract class AbstractNode {
 
 	public <T> T getProperty(final String prop, final Converter<T> converter) {
 		final String p = properties.get(prop);
-		return p == null ? null : converter.convert(p);
+		return converter.convert(p);
 	}
 
 	public String getType() {

@@ -9,7 +9,7 @@ import net.cadrian.nwcscore.music.FullNote;
 import net.cadrian.nwcscore.music.KeySignature;
 
 class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey.Visitor, LyMultiRest.Visitor,
-		LyNote.Visitor, LyRest.Visitor, LyTimeSignature.Visitor, LyTransposition.Visitor {
+		LyNote.Visitor, LyPedal.Visitor, LyRest.Visitor, LyTimeSignature.Visitor, LyTransposition.Visitor {
 
 	private final PrintWriter out;
 	private final String indent;
@@ -183,6 +183,21 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 			noteWriterContext.addChord(Collections.singletonList(nodeFullNote));
 		} else {
 			noteWriterContext.singleChord(Collections.singletonList(nodeFullNote));
+		}
+	}
+
+	@Override
+	public void visit(final LyPedal node) {
+		switch (node.getPedal()) {
+		case SUSTAIN:
+			out.println(indent + (node.isOn() ? "\\sustainOn" : "\\sustainOff"));
+			break;
+		case SOSTENUTO:
+			out.println(indent + (node.isOn() ? "\\sostenutoOn" : "\\sostenutoOff"));
+			break;
+		case UNA_CORDA:
+			out.println(indent + (node.isOn() ? "\\unaCorda" : "\\treCorde"));
+			break;
 		}
 	}
 

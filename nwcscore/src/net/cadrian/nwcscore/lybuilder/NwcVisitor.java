@@ -9,23 +9,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.cadrian.nwcscore.ast.AbstractNode;
-import net.cadrian.nwcscore.ast.Bar;
-import net.cadrian.nwcscore.ast.Chord;
-import net.cadrian.nwcscore.ast.Clef;
-import net.cadrian.nwcscore.ast.Converter;
-import net.cadrian.nwcscore.ast.Key;
-import net.cadrian.nwcscore.ast.Lyric;
-import net.cadrian.nwcscore.ast.Note;
-import net.cadrian.nwcscore.ast.Rest;
-import net.cadrian.nwcscore.ast.RestMultiBar;
-import net.cadrian.nwcscore.ast.Song;
-import net.cadrian.nwcscore.ast.SongInfo;
-import net.cadrian.nwcscore.ast.Staff;
-import net.cadrian.nwcscore.ast.StaffInstrument;
-import net.cadrian.nwcscore.ast.TimeSig;
-import net.cadrian.nwcscore.ast.Visitors;
 import net.cadrian.nwcscore.music.KeySignature;
+import net.cadrian.nwcscore.music.Pedal;
+import net.cadrian.nwcscore.parser.ast.AbstractNode;
+import net.cadrian.nwcscore.parser.ast.Bar;
+import net.cadrian.nwcscore.parser.ast.Chord;
+import net.cadrian.nwcscore.parser.ast.Clef;
+import net.cadrian.nwcscore.parser.ast.Converter;
+import net.cadrian.nwcscore.parser.ast.Key;
+import net.cadrian.nwcscore.parser.ast.Lyric;
+import net.cadrian.nwcscore.parser.ast.Note;
+import net.cadrian.nwcscore.parser.ast.Rest;
+import net.cadrian.nwcscore.parser.ast.RestMultiBar;
+import net.cadrian.nwcscore.parser.ast.Song;
+import net.cadrian.nwcscore.parser.ast.SongInfo;
+import net.cadrian.nwcscore.parser.ast.Staff;
+import net.cadrian.nwcscore.parser.ast.StaffInstrument;
+import net.cadrian.nwcscore.parser.ast.SustainPedal;
+import net.cadrian.nwcscore.parser.ast.TimeSig;
+import net.cadrian.nwcscore.parser.ast.User;
+import net.cadrian.nwcscore.parser.ast.Visitors;
 
 class NwcVisitor implements Visitors {
 
@@ -293,6 +296,37 @@ class NwcVisitor implements Visitors {
 	@Override
 	public void visit(final TimeSig node) {
 		currentStaff.add(new LyTimeSignature(node.getProperty("Signature")));
+	}
+
+	@Override
+	public void visit(final User node) {
+		if (!node.getName().equals("Pianoteq_Pedals.nw")) {
+			System.err.println("Ignored user object: " + node.getName());
+		} else {
+			final Pedal pedal;
+			switch (node.getProperty("Type")) {
+			case "Sustain":
+				pedal = Pedal.SUSTAIN;
+				break;
+			case "Sustenuto":
+				pedal = Pedal.SOSTENUTO;
+				break;
+			case "Soft":
+				pedal = Pedal.UNA_CORDA;
+				break;
+			default:
+				throw new RuntimeException("Pedal type not supported: " + node.getProperty("Type"));
+			}
+			final int value = node.getProperty("Value", Converter.INTEGER);
+			currentStaff.add(new LyPedal(pedal, value > 0));
+		}
+	}
+
+	@Override
+	public void visit(final SustainPedal node) {
+		final String status = node.getProperty("Status");
+		final boolean on = status == null || !status.equals("Released");
+		currentStaff.add(new LyPedal(Pedal.SUSTAIN, on));
 	}
 
 }

@@ -1,4 +1,4 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
 public class Lyric extends AbstractNode {
 

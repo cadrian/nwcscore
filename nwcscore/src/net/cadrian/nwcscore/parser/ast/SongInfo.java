@@ -1,12 +1,9 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
-public class RestMultiBar extends AbstractNode {
+public class SongInfo extends AbstractNode {
 
 	public static interface Visitor extends AbstractNode.Visitor {
-		void visit(RestMultiBar node);
-	}
-
-	public RestMultiBar() {
+		void visit(SongInfo node);
 	}
 
 	@Override

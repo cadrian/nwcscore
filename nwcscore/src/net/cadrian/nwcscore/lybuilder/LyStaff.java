@@ -74,6 +74,7 @@ class LyStaff {
 		default:
 			out.println("  {");
 			outputInstructions(out, instructions);
+			out.println("    \\set Staff.pedalSustainStyle = #'mixed");
 			out.println("  <<");
 			final int n = nodes.size();
 			final int n2 = n / 2;

@@ -1,4 +1,4 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
 import java.util.ArrayList;
 import java.util.Collections;

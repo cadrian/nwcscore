@@ -2,7 +2,7 @@ package net.cadrian.nwcscore.lybuilder;
 
 import java.io.IOException;
 
-import net.cadrian.nwcscore.ast.Song;
+import net.cadrian.nwcscore.parser.ast.Song;
 
 public class LilypondBuilder {
 

@@ -1,12 +1,12 @@
-package net.cadrian.nwcscore.ast;
+package net.cadrian.nwcscore.parser.ast;
 
-public class Note extends AbstractNode {
+public class Bar extends AbstractNode {
 
 	public static interface Visitor extends AbstractNode.Visitor {
-		void visit(Note node);
+		void visit(Bar node);
 	}
 
-	public Note() {
+	public Bar() {
 	}
 
 	@Override

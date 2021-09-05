@@ -8,10 +8,10 @@ import java.io.Reader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.cadrian.nwcscore.ast.Song;
 import net.cadrian.nwcscore.lybuilder.LilypondBuilder;
 import net.cadrian.nwcscore.parser.ParseException;
 import net.cadrian.nwcscore.parser.Parser;
+import net.cadrian.nwcscore.parser.ast.Song;
 
 public class Nwc2Ly {
 
