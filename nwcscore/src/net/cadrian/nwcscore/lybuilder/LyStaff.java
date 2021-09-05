@@ -3,7 +3,9 @@ package net.cadrian.nwcscore.lybuilder;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 class LyStaff {
 
@@ -14,6 +16,8 @@ class LyStaff {
 	private String shortName;
 	private final Set<String> bracket;
 	private LyStaffGroup group;
+
+	private final Map<Integer, String> lyrics = new TreeMap<>();
 
 	LyStaff(final Set<String> bracket) {
 		this.bracket = bracket;
@@ -48,6 +52,10 @@ class LyStaff {
 		layer.add(node);
 	}
 
+	void setLyrics(final int num, final String lyrics) {
+		this.lyrics.put(num, lyrics);
+	}
+
 	public void output(final PrintWriter out, final boolean withNames, final String... instructions) {
 		out.print("  \\new Staff ");
 		if (withNames) {
@@ -68,27 +76,32 @@ class LyStaff {
 		case 1:
 			out.println("  {");
 			outputInstructions(out, instructions);
-			outputLayer(out, "    ", nodes.get(0));
+			out.println("    \\new Voice {");
+			outputLayer(out, "      ", nodes.get(0));
+			out.println("    }");
+			outputLyrics(out);
 			out.println("  }");
 			break;
 		default:
 			out.println("  {");
 			outputInstructions(out, instructions);
 			out.println("    \\set Staff.pedalSustainStyle = #'mixed");
-			out.println("  <<");
+			out.println("    <<");
 			final int n = nodes.size();
 			final int n2 = n / 2;
 			for (int i = 0; i < n; i++) {
-				out.print("    \\new Voice { ");
+				out.print("      \\new Voice { ");
 				if (i < n2) {
 					out.println("\\voiceOne");
 				} else {
 					out.println("\\voiceTwo");
 				}
-				outputLayer(out, "      ", nodes.get(i));
-				out.println("    }");
+				outputLayer(out, "        ", nodes.get(i));
+				out.println("      }");
 			}
-			out.println("  >> }");
+			out.println("    >>");
+			outputLyrics(out);
+			out.println("  }");
 			break;
 		}
 	}
@@ -96,6 +109,21 @@ class LyStaff {
 	private void outputInstructions(final PrintWriter out, final String... instructions) {
 		for (final String instruction : instructions) {
 			out.println("    " + instruction);
+		}
+	}
+
+	private void outputLyrics(final PrintWriter out) {
+		for (final String lyrics : this.lyrics.values()) {
+			out.println("    \\addlyrics {");
+			for (final String line : lyrics.split("\n")) {
+				if (line.isBlank()) {
+					out.println();
+				} else {
+					out.print("      ");
+					out.println(line.replace("-", " -- "));
+				}
+			}
+			out.println("    }");
 		}
 	}
 

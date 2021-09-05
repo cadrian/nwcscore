@@ -225,8 +225,7 @@ class NwcVisitor implements Visitors {
 
 	@Override
 	public void visit(final Lyric node) {
-		// TODO Auto-generated method stub
-
+		currentStaff.setLyrics(node.getNum(), node.getProperty("Text", Converter.NWC_STRING));
 	}
 
 	@Override
