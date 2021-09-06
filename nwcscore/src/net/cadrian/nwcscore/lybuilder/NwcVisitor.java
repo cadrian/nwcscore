@@ -35,6 +35,7 @@ import net.cadrian.nwcscore.parser.ast.Converter;
 import net.cadrian.nwcscore.parser.ast.Key;
 import net.cadrian.nwcscore.parser.ast.Lyric;
 import net.cadrian.nwcscore.parser.ast.Note;
+import net.cadrian.nwcscore.parser.ast.PgSetup;
 import net.cadrian.nwcscore.parser.ast.Rest;
 import net.cadrian.nwcscore.parser.ast.RestMultiBar;
 import net.cadrian.nwcscore.parser.ast.Song;
@@ -53,6 +54,8 @@ class NwcVisitor implements Visitors {
 	private String songLyricist;
 	private String songCopyright1;
 	private String songCopyright2;
+
+	private int firstBar = 1;
 
 	private final List<LyStaffGroup> staffGroups = new ArrayList<>();
 	private LyStaff currentStaff;
@@ -254,6 +257,7 @@ class NwcVisitor implements Visitors {
 	@Override
 	public void visit(final Song node) {
 		node.getSongInfo().accept(this);
+		node.getPgSetup().accept(this);
 		for (final Staff staff : node.getStaves()) {
 			staff.accept(this);
 		}
@@ -269,6 +273,14 @@ class NwcVisitor implements Visitors {
 	}
 
 	@Override
+	public void visit(final PgSetup node) {
+		final int bar = node.getProperty("StartingBar", Converter.INTEGER);
+		if (bar > 0) {
+			firstBar = bar;
+		}
+	}
+
+	@Override
 	public void visit(final Staff node) {
 		if (node.getProperty("Visible").equals("Y")) {
 			final Set<String> bracket = node.getBracket();
@@ -279,7 +291,7 @@ class NwcVisitor implements Visitors {
 			}
 
 			if (currentStaff == null) {
-				currentStaff = new LyStaff(bracket);
+				currentStaff = new LyStaff(bracket, firstBar);
 			}
 
 			currentStaff.setName(node.getProperty("Label", Converter.NWC_STRING));

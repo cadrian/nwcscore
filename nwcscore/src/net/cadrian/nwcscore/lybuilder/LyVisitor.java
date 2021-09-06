@@ -31,6 +31,8 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 	private final String indent;
 	private final NotesWriterContext noteWriterContext;
 
+	private int bar;
+
 	// TODO maybe useless? (that's an NWC value used for transposing during
 	// playback, not during score printing)
 	@SuppressWarnings("unused")
@@ -40,10 +42,11 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 	private KeySignature keySignature;
 	private LyTimeSignature timeSignature;
 
-	LyVisitor(final PrintWriter out, final String indent) {
+	LyVisitor(final PrintWriter out, final String indent, final int firstBar) {
 		this.out = out;
 		this.indent = indent;
 		this.noteWriterContext = new NotesWriterContext(out, indent);
+		this.bar = firstBar;
 	}
 
 	@Override
@@ -87,8 +90,6 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 			break;
 		}
 	}
-
-	private int bar = 1;
 
 	@Override
 	public void visit(final LyBar node) {

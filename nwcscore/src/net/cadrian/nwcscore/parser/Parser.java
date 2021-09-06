@@ -23,6 +23,7 @@ import net.cadrian.nwcscore.parser.ast.Clef;
 import net.cadrian.nwcscore.parser.ast.Key;
 import net.cadrian.nwcscore.parser.ast.Lyric;
 import net.cadrian.nwcscore.parser.ast.Note;
+import net.cadrian.nwcscore.parser.ast.PgSetup;
 import net.cadrian.nwcscore.parser.ast.Rest;
 import net.cadrian.nwcscore.parser.ast.RestMultiBar;
 import net.cadrian.nwcscore.parser.ast.Song;
@@ -89,6 +90,9 @@ public class Parser {
 		switch (type) {
 		case "SongInfo":
 			parseSongInfo();
+			break;
+		case "PgSetup":
+			parsePgSetup();
 			break;
 		case "AddStaff":
 			parseAddStaff();
@@ -161,6 +165,12 @@ public class Parser {
 		final SongInfo songInfo = new SongInfo();
 		parseProperties(songInfo);
 		song = new Song(songInfo);
+	}
+	
+	private void parsePgSetup() throws ParseException {
+		final PgSetup pgSetup = new PgSetup();
+		parseProperties(pgSetup);
+		song.setPgSetup(pgSetup);
 	}
 
 	private void parseAddStaff() throws ParseException {

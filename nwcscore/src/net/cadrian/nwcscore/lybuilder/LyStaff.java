@@ -33,10 +33,13 @@ class LyStaff {
 	private final Set<String> bracket;
 	private LyStaffGroup group;
 
+	private final int firstBar;
+
 	private final Map<Integer, String> lyrics = new TreeMap<>();
 
-	LyStaff(final Set<String> bracket) {
+	LyStaff(final Set<String> bracket, final int firstBar) {
 		this.bracket = bracket;
+		this.firstBar = firstBar;
 		nextLayer();
 	}
 
@@ -123,6 +126,9 @@ class LyStaff {
 	}
 
 	private void outputInstructions(final PrintWriter out, final String... instructions) {
+		if (firstBar != 1) {
+			out.println("    \\set Score.currentBarNumber = #" + firstBar);
+		}
 		for (final String instruction : instructions) {
 			out.println("    " + instruction);
 		}
@@ -144,7 +150,7 @@ class LyStaff {
 	}
 
 	private void outputLayer(final PrintWriter out, final String indent, final List<LyNode> layer) {
-		final LyVisitor v = new LyVisitor(out, indent);
+		final LyVisitor v = new LyVisitor(out, indent, firstBar);
 		for (final LyNode node : layer) {
 			node.accept(v);
 		}

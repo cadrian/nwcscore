@@ -27,6 +27,7 @@ public class Song extends AbstractNode {
 	}
 
 	private final SongInfo songInfo;
+	private PgSetup pgSetup = new PgSetup();
 	private final List<Staff> staves = new ArrayList<>();
 
 	public Song(final SongInfo songInfo) {
@@ -43,6 +44,14 @@ public class Song extends AbstractNode {
 
 	public List<Staff> getStaves() {
 		return Collections.unmodifiableList(staves);
+	}
+
+	public PgSetup getPgSetup() {
+		return pgSetup;
+	}
+
+	public void setPgSetup(final PgSetup pgSetup) {
+		this.pgSetup = pgSetup;
 	}
 
 	@Override
