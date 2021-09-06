@@ -96,6 +96,11 @@ class LyStaff {
 			out.println("  {");
 			outputInstructions(out, instructions);
 			out.println("    \\new Voice {");
+			if (firstBar != 1) {
+				out.println("    \\set Score.currentBarNumber = #" + firstBar);
+				out.println("    \\set Score.barNumberVisibility = #all-bar-numbers-visible");
+				out.println("    \\bar \"\" % bar#" + firstBar);
+			}
 			outputLayer(out, "      ", nodes.get(0));
 			out.println("    }");
 			outputLyrics(out);
@@ -110,6 +115,11 @@ class LyStaff {
 			final int n2 = n / 2;
 			for (int i = 0; i < n; i++) {
 				out.print("      \\new Voice { ");
+				if (firstBar != 1) {
+					out.println("    \\set Score.currentBarNumber = #" + firstBar);
+					out.println("    \\set Score.barNumberVisibility = #all-bar-numbers-visible");
+					out.println("    \\bar \"\" % bar#" + firstBar);
+				}
 				if (i < n2) {
 					out.println("\\voiceOne");
 				} else {
@@ -126,9 +136,6 @@ class LyStaff {
 	}
 
 	private void outputInstructions(final PrintWriter out, final String... instructions) {
-		if (firstBar != 1) {
-			out.println("    \\set Score.currentBarNumber = #" + firstBar);
-		}
 		for (final String instruction : instructions) {
 			out.println("    " + instruction);
 		}
