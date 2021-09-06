@@ -56,9 +56,6 @@ class FullNoteBuilder {
 	FullNoteBuilder(final String nwcdur, final boolean visible) {
 		this(nwcdur);
 		note = visible ? Note.REST : Note.SKIP;
-		if (triplet != null) {
-			System.out.println("REST IN TRIPLET: "+triplet);
-		}
 	}
 
 	FullNoteBuilder(final String nwcpos, final String nwcdur, final Note note0, final int octave0,
