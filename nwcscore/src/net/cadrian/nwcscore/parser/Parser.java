@@ -25,6 +25,7 @@ import net.cadrian.nwcscore.parser.ast.Lyric;
 import net.cadrian.nwcscore.parser.ast.Note;
 import net.cadrian.nwcscore.parser.ast.PgSetup;
 import net.cadrian.nwcscore.parser.ast.Rest;
+import net.cadrian.nwcscore.parser.ast.RestChord;
 import net.cadrian.nwcscore.parser.ast.RestMultiBar;
 import net.cadrian.nwcscore.parser.ast.Song;
 import net.cadrian.nwcscore.parser.ast.SongInfo;
@@ -130,6 +131,9 @@ public class Parser {
 		case "Rest":
 			parseRest();
 			break;
+		case "RestChord":
+			parseRestChord();
+			break;
 		case "User":
 			parseUser();
 			break;
@@ -166,7 +170,7 @@ public class Parser {
 		parseProperties(songInfo);
 		song = new Song(songInfo);
 	}
-	
+
 	private void parsePgSetup() throws ParseException {
 		final PgSetup pgSetup = new PgSetup();
 		parseProperties(pgSetup);
@@ -237,6 +241,12 @@ public class Parser {
 		final Rest rest = new Rest();
 		parseProperties(rest);
 		staff.addNode(rest);
+	}
+
+	private void parseRestChord() throws ParseException {
+		final RestChord restChord = new RestChord();
+		parseProperties(restChord);
+		staff.addNode(restChord);
 	}
 
 	private void parseUser() throws ParseException {

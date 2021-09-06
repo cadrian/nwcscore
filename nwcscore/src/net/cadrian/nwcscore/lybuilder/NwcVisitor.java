@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,7 @@ import net.cadrian.nwcscore.parser.ast.Lyric;
 import net.cadrian.nwcscore.parser.ast.Note;
 import net.cadrian.nwcscore.parser.ast.PgSetup;
 import net.cadrian.nwcscore.parser.ast.Rest;
+import net.cadrian.nwcscore.parser.ast.RestChord;
 import net.cadrian.nwcscore.parser.ast.RestMultiBar;
 import net.cadrian.nwcscore.parser.ast.Song;
 import net.cadrian.nwcscore.parser.ast.SongInfo;
@@ -176,6 +178,19 @@ class NwcVisitor implements Visitors {
 			final Map<String, String> opts = node.getProperty("Opts", Converter.NWC_STRINGMAP);
 			currentStaff.add(new LyChord(currentClef.getChord(nwcpos, nwcdur, currentKeySignature),
 					nwcpos2 == null ? null : currentClef.getChord(nwcpos2, nwcdur2, currentKeySignature), opts));
+		}
+	}
+
+	@Override
+	public void visit(final RestChord node) {
+		final String visibility = node.getProperty("Visibility");
+		if (visibility == null || visibility.equals("Y")) {
+			final String nwcdur = node.getProperty("Dur"); // rest
+			final String nwcdur2 = node.getProperty("Dur2"); // note
+			final String nwcpos2 = node.getProperty("Pos2");
+			final Map<String, String> opts = node.getProperty("Opts", Converter.NWC_STRINGMAP);
+			currentStaff.add(new LyChord(Collections.singletonList(currentClef.getRest(nwcdur, true)),
+					currentClef.getChord(nwcpos2, nwcdur2, currentKeySignature), opts));
 		}
 	}
 

@@ -16,8 +16,18 @@
  */
 package net.cadrian.nwcscore.parser.ast;
 
-public interface Visitors extends Bar.Visitor, Chord.Visitor, Clef.Visitor, Key.Visitor, Lyric.Visitor, Note.Visitor,
-		PgSetup.Visitor, Rest.Visitor, RestChord.Visitor, RestMultiBar.Visitor, Song.Visitor, SongInfo.Visitor,
-		Staff.Visitor, StaffInstrument.Visitor, SustainPedal.Visitor, TimeSig.Visitor, User.Visitor {
+public class RestChord extends AbstractNode {
+
+	public static interface Visitor extends AbstractNode.Visitor {
+		void visit(RestChord node);
+	}
+
+	public RestChord() {
+	}
+
+	@Override
+	public void accept(final AbstractNode.Visitor v) {
+		((Visitor) v).visit(this);
+	}
 
 }
