@@ -35,6 +35,7 @@ class FullNoteBuilder {
 	private final int dots;
 	private final boolean slur;
 	private boolean tie;
+	private final boolean grace;
 	private boolean cautionary;
 	private final Triplet triplet;
 
@@ -50,6 +51,7 @@ class FullNoteBuilder {
 		duration = getDuration(nwcdurMatcher);
 		dots = getDots(properties);
 		slur = isSlur(properties);
+		grace = isGrace(properties);
 		triplet = getTriplet(properties);
 	}
 
@@ -164,6 +166,10 @@ class FullNoteBuilder {
 		return properties.containsKey("Slur");
 	}
 
+	private boolean isGrace(final Map<String, String> properties) {
+		return properties.containsKey("Grace");
+	}
+
 	private boolean isTie(final Matcher nwcposMatcher) {
 		final String tie = nwcposMatcher.group("tie");
 		return tie != null && !tie.isEmpty();
@@ -194,7 +200,7 @@ class FullNoteBuilder {
 
 	FullNote build() {
 		// TODO: add ignored properties (Accent, Staccato, ???)
-		return new FullNote(note, octave, duration, dots, slur, tie, cautionary, triplet);
+		return new FullNote(note, octave, duration, dots, slur, tie, grace, cautionary, triplet);
 	}
 
 }

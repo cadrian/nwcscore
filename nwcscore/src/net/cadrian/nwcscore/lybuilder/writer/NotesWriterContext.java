@@ -91,12 +91,18 @@ public class NotesWriterContext {
 	}
 
 	String note2str(final FullNote nodeFullNote) {
+		final StringBuilder result = new StringBuilder();
 		final FullNote tieFullNote = getNoteOrTie(nodeFullNote);
 		if (nodeFullNote.tie) {
 			ties.add(nodeFullNote);
 		}
-		return tieFullNote.note.id.toLowerCase().replace('♯', 's').replace('♭', 'f') + octave2str(tieFullNote.octave)
-				+ cautionary2str(nodeFullNote.cautionary);
+		if (nodeFullNote.grace) {
+			result.append("\\grace ");
+		}
+		result.append(tieFullNote.note.id.toLowerCase().replace('♯', 's').replace('♭', 'f'));
+		result.append(octave2str(tieFullNote.octave));
+		result.append(cautionary2str(nodeFullNote.cautionary));
+		return result.toString();
 	}
 
 	String slur2str(final FullNote fullNote) {

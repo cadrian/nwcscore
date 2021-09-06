@@ -26,11 +26,12 @@ public final class FullNote {
 	public final int dots;
 	public final boolean slur;
 	public final boolean tie;
+	public final boolean grace;
 	public final boolean cautionary;
 	public final Triplet triplet;
 
 	FullNote(final Note note, final int octave, final Duration duration, final int dots, final boolean slur,
-			final boolean tie, final boolean cautionary, final Triplet triplet) {
+			final boolean tie, final boolean grace, final boolean cautionary, final Triplet triplet) {
 		if (note == null) {
 			throw new RuntimeException("BUG");
 		}
@@ -40,13 +41,14 @@ public final class FullNote {
 		this.dots = dots;
 		this.slur = slur;
 		this.tie = tie;
+		this.grace = grace;
 		this.cautionary = cautionary;
 		this.triplet = triplet;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cautionary, dots, duration, note, triplet, octave, slur, tie);
+		return Objects.hash(cautionary, dots, duration, grace, note, octave, slur, tie, triplet);
 	}
 
 	@Override
@@ -58,8 +60,9 @@ public final class FullNote {
 			return false;
 		}
 		final FullNote other = (FullNote) obj;
-		return cautionary == other.cautionary && dots == other.dots && duration == other.duration && note == other.note
-				&& triplet == other.triplet && octave == other.octave && slur == other.slur && tie == other.tie;
+		return cautionary == other.cautionary && dots == other.dots && duration == other.duration
+				&& grace == other.grace && note == other.note && octave == other.octave && slur == other.slur
+				&& tie == other.tie && triplet == other.triplet;
 	}
 
 }

@@ -77,6 +77,9 @@ public class ChordWriter extends AbstractNoteWriter {
 	}
 
 	private static int chordDuration(final FullNote fullNote) {
+		if (fullNote.grace) {
+			return 0;
+		}
 		final int base = 256 / fullNote.duration.division;
 		switch (fullNote.dots) {
 		case 0:
