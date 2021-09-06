@@ -16,9 +16,12 @@
  */
 package net.cadrian.nwcscore.music;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +37,7 @@ public class KeySignature {
 		addSignature(Note.Bf, Mode.MAJOR, Note.Bf, Note.Ef);
 		addSignature(Note.F, Mode.MAJOR, Note.Bf);
 		addSignature(Note.C, Mode.MAJOR);
+		addSignature(Note.C, Mode.MAJOR, Note.C); // Yes, NWC notes the empty signature as "C"
 		addSignature(Note.G, Mode.MAJOR, Note.Fs);
 		addSignature(Note.D, Mode.MAJOR, Note.Fs, Note.Cs);
 		addSignature(Note.A, Mode.MAJOR, Note.Fs, Note.Cs, Note.Gs);
@@ -103,6 +107,10 @@ public class KeySignature {
 		return mode;
 	}
 
+	public List<Note> getSignature() {
+		return Collections.unmodifiableList(Arrays.asList(signature));
+	}
+
 	public Note getAlteredNote(final Note note) {
 		final Note result = alterations.get(note.getNatural());
 		return result == null ? note : result;
@@ -111,6 +119,14 @@ public class KeySignature {
 	@Override
 	public String toString() {
 		return root + " " + mode + ": " + sig2str(signature);
+	}
+
+	public static KeySignature adhoc(final String signature) {
+		final List<Note> sig = new ArrayList<>();
+		for (final String s : signature.split(",")) {
+			sig.add(Note.nwc(s));
+		}
+		return new KeySignature(null, null, sig.toArray(new Note[sig.size()]));
 	}
 
 }

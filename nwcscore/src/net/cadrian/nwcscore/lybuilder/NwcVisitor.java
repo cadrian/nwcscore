@@ -251,17 +251,11 @@ class NwcVisitor implements Visitors {
 	@Override
 	public void visit(final Key node) {
 		final String visibility = node.getProperty("Visibility");
-		if (visibility == null || visibility.equals("Y")) {
-			final String signature = node.getProperty("Signature");
-			if (KeySignature.get(signature) != null) {
-				final LyKey lyKey = new LyKey(signature, node.getProperty("Tonic"));
-				currentStaff.add(lyKey);
-				currentKeySignature = lyKey.getSignature();
-			} else {
-				// TODO some kind of ad-hoc signature???
-				System.err.println("Ignore unknown signature: " + signature);
-			}
-		}
+		final String signature = node.getProperty("Signature");
+		final LyKey lyKey = new LyKey(signature, node.getProperty("Tonic"),
+				visibility == null || visibility.equals("Y"));
+		currentStaff.add(lyKey);
+		currentKeySignature = lyKey.getSignature();
 	}
 
 	@Override

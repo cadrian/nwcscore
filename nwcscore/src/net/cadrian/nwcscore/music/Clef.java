@@ -50,4 +50,5 @@ public enum Clef {
 
 		return Collections.unmodifiableList(result);
 	}
+
 }

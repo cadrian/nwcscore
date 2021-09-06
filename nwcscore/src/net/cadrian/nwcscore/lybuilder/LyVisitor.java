@@ -23,6 +23,7 @@ import net.cadrian.nwcscore.lybuilder.writer.NotesWriterContext;
 import net.cadrian.nwcscore.music.Clef;
 import net.cadrian.nwcscore.music.FullNote;
 import net.cadrian.nwcscore.music.KeySignature;
+import net.cadrian.nwcscore.music.Note;
 
 class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey.Visitor, LyMultiRest.Visitor,
 		LyNote.Visitor, LyPedal.Visitor, LyRest.Visitor, LyTimeSignature.Visitor, LyTransposition.Visitor {
@@ -63,9 +64,45 @@ class LyVisitor implements LyBar.Visitor, LyChord.Visitor, LyClef.Visitor, LyKey
 	@Override
 	public void visit(final LyKey node) {
 		keySignature = node.getSignature();
-		out.println(
-				indent + "\\key " + keySignature.getRoot().toString().toLowerCase().replace('♯', 's').replace('♭', 'f')
-						+ " \\" + keySignature.getMode().toString().toLowerCase());
+		if (node.isVisible()) {
+			if (keySignature.getRoot() != null) {
+				out.println(indent + "\\key "
+						+ keySignature.getRoot().toString().toLowerCase().replace('♯', 's').replace('♭', 'f') + " \\"
+						+ keySignature.getMode().toString().toLowerCase());
+			} else {
+				// ad-hoc signature
+				final StringBuilder sig = new StringBuilder("((");
+				for (final Note note : keySignature.getSignature()) {
+					if (!note.isNatural()) {
+						final int pos = getSigPos(note);
+						sig.append('(').append(pos).append(" . ")
+								.append(note.isSharp() ? ",SHARP" : note.isFlat() ? ",FLAT" : "BUG").append(')');
+					}
+				}
+				out.println(indent + "\\set Staff.keySignature = #`(" + sig + ")");
+			}
+		}
+	}
+
+	private int getSigPos(final Note note) {
+		switch (note.getNatural()) {
+		case C:
+			return 0;
+		case D:
+			return 1;
+		case E:
+			return 2;
+		case F:
+			return 3;
+		case G:
+			return 4;
+		case A:
+			return 5;
+		case B:
+			return 6;
+		default:
+			throw new RuntimeException("BUG");
+		}
 	}
 
 	@Override
