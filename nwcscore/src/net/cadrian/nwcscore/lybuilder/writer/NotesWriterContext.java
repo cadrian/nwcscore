@@ -76,12 +76,12 @@ public class NotesWriterContext {
 	FullNote getNoteOrTie(final FullNote fullNote) {
 		for (final FullNote tie : ties) {
 			if (fullNote.note.isNatural()) {
-				if (fullNote.note == tie.note.getNatural()) {
+				if (fullNote.note == tie.note.getNatural() && fullNote.octave == tie.octave) {
 					ties.remove(tie);
 					return tie;
 				}
 			} else {
-				if (fullNote.note == tie.note) {
+				if (fullNote.note == tie.note && fullNote.octave == tie.octave) {
 					ties.remove(tie);
 					return tie;
 				}
