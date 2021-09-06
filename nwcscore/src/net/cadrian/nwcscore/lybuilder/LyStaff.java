@@ -31,20 +31,17 @@ class LyStaff {
 	private String name;
 	private String shortName;
 	private final Set<String> bracket;
-	private LyStaffGroup group;
 
 	private final int firstBar;
+	private final boolean connectBars;
 
 	private final Map<Integer, String> lyrics = new TreeMap<>();
 
-	LyStaff(final Set<String> bracket, final int firstBar) {
+	LyStaff(final Set<String> bracket, final int firstBar, final boolean connectBars) {
 		this.bracket = bracket;
 		this.firstBar = firstBar;
+		this.connectBars = connectBars;
 		nextLayer();
-	}
-
-	void setGroup(final LyStaffGroup group) {
-		this.group = group;
 	}
 
 	public String getName() {
@@ -86,21 +83,14 @@ class LyStaff {
 				out.println("    shortInstrumentName = #\"" + shortName + "\"");
 			}
 			out.println("    \\override InstrumentName.self-alignment-X = #RIGHT");
-			if (group == null || !group.hasBracket("ConnectBars")) { // TODO always false, get property from Staff
-				out.println("    \\override Staff.BarLine.allow-span-bar = ##f");
-			}
 			out.print("  }");
 		}
 		switch (nodes.size()) {
 		case 1:
 			out.println("  {");
-			outputInstructions(out, instructions);
+			outputStaffInstructions(out, instructions);
 			out.println("    \\new Voice {");
-			if (firstBar != 1) {
-				out.println("    \\set Score.currentBarNumber = #" + firstBar);
-				out.println("    \\set Score.barNumberVisibility = #all-bar-numbers-visible");
-				out.println("    \\bar \"\" % bar#" + firstBar);
-			}
+			outputVoiceInstructions(out);
 			outputLayer(out, "      ", nodes.get(0));
 			out.println("    }");
 			outputLyrics(out);
@@ -108,18 +98,14 @@ class LyStaff {
 			break;
 		default:
 			out.println("  {");
-			outputInstructions(out, instructions);
+			outputStaffInstructions(out, instructions);
 			out.println("    \\set Staff.pedalSustainStyle = #'mixed");
 			out.println("    <<");
 			final int n = nodes.size();
 			final int n2 = n / 2;
 			for (int i = 0; i < n; i++) {
 				out.print("      \\new Voice { ");
-				if (firstBar != 1) {
-					out.println("    \\set Score.currentBarNumber = #" + firstBar);
-					out.println("    \\set Score.barNumberVisibility = #all-bar-numbers-visible");
-					out.println("    \\bar \"\" % bar#" + firstBar);
-				}
+				outputVoiceInstructions(out);
 				if (i < n2) {
 					out.println("\\voiceOne");
 				} else {
@@ -135,7 +121,18 @@ class LyStaff {
 		}
 	}
 
-	private void outputInstructions(final PrintWriter out, final String... instructions) {
+	private void outputVoiceInstructions(final PrintWriter out) {
+		if (firstBar != 1) {
+			out.println("    \\set Score.currentBarNumber = #" + firstBar);
+			out.println("    \\set Score.barNumberVisibility = #all-bar-numbers-visible");
+			out.println("    \\bar \"\" % bar#" + firstBar);
+		}
+		if (!connectBars) {
+			out.println("    \\override Staff.BarLine.allow-span-bar = ##f");
+		}
+	}
+
+	private void outputStaffInstructions(final PrintWriter out, final String... instructions) {
 		for (final String instruction : instructions) {
 			out.println("    " + instruction);
 		}

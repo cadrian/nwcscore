@@ -300,7 +300,7 @@ class NwcVisitor implements Visitors {
 			}
 
 			if (currentStaff == null) {
-				currentStaff = new LyStaff(bracket, firstBar);
+				currentStaff = new LyStaff(bracket, firstBar, node.isConnectBars());
 			}
 
 			currentStaff.setName(node.getProperty("Label", Converter.NWC_STRING));
