@@ -35,7 +35,7 @@ public class LyChord extends LyNode {
 
 	LyChord(final List<FullNote> shortNotes, final List<FullNote> longNotes, final Map<String, String> opts) {
 		if (longNotes != null && longNotes.get(0).duration == shortNotes.get(0).duration) {
-			List<FullNote> notes = new ArrayList<>(shortNotes);
+			final List<FullNote> notes = new ArrayList<>(shortNotes);
 			notes.addAll(longNotes);
 			this.shortNotes = Collections.unmodifiableList(notes);
 			this.longNotes = null;
